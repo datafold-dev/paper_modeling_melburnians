@@ -25,14 +25,17 @@ The primary source of the data included in this repository is provided by the ci
 Mirror of Supplementary Material
 --------------------------------
 
-A mirror of the supplementary material which also hosts the cached file is located at
-[INSERT_GITHUB|GITLAB_LINK].
+A mirror of the supplementary material which also contains cached ``.csv`` file is located at
+`github <https://github.com/datafold-dev/paper_modeling_melburnians>`__.
 
-Cite as
--------
+Because the data is versioned with git-lfs (Git Large File Storage), it can only be cloned
+via git:
 
-[TODO: INSERT_CITATION]
+.. code-block::
 
+    git clone git@github.com:datafold-dev/paper_modeling_melburnians.git
+
+(A download of the repository in a ``.zip`` file only contains file links to the data.)
 
 Run notebook
 ------------
@@ -60,8 +63,8 @@ Open the Jupyter notebook with
     jupyter notebook notebook.ipynb
 
 
-Overview of all files:
-^^^^^^^^^^^^^^^^^^^^^^
+Overview of data files:
+^^^^^^^^^^^^^^^^^^^^^^^
 
 **Raw data:**
 
@@ -69,7 +72,9 @@ Overview of all files:
 
 **Cached data:**
 
-Note, that these are only included in the github|gitlab mirror, because of size restrictions in the official supplementary material.
+Note that because of size restrictions of the official supplementary material, the cached
+data files are only included in the github repository (see link above). All files are 
+generated if running the notebook with ``use_cache=False`` (however, note that this may take a while).
 
 * ``X_selected.csv`` -- selected sensors and samples in ``X_all.csv``
 * ``X_windows_[train|test].csv`` -- data in time series of length 192; 168 hour (initial condition) + 24 hours (prediction)
@@ -77,3 +82,4 @@ Note, that these are only included in the github|gitlab mirror, because of size 
 * ``X_latent_[train|test].csv`` -- diffusion map values for each prediction window
 * ``X_latent_interp_test.csv`` -- with EDMD model interpolated diffusion map values
 * ``X_eigfunc_test.csv`` -- complex Koopman eigenfunction values
+
