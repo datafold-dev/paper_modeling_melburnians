@@ -30,7 +30,9 @@ from pandas.api.types import is_timedelta64_dtype
 from sklearn.model_selection import train_test_split
 
 rc("text", usetex=True)
-pylab.rcParams["text.latex.preamble"] = r"\usepackage{tgheros} \usepackage{sansmath} \sansmath \usepackage{siunitx} \sisetup{detect-all}"
+pylab.rcParams[
+    "text.latex.preamble"
+] = r"\usepackage{tgheros} \usepackage{sansmath} \sansmath \usepackage{siunitx} \sisetup{detect-all}"
 rc("font", size=12)
 
 SINGLE_COLUMN = 8  # inches
@@ -939,35 +941,38 @@ def plot_timeseries_dmap(
     sensor_str, dmap_idx, X_windows_train, X_windows_test, X_latent_train, X_latent_test
 ):
 
-    f, ax = plt.subplots(nrows=2, sharex=True, figsize=(DOUBLE_COLUMN, DOUBLE_COLUMN * 0.55))
+    f, ax = plt.subplots(
+        nrows=2, sharex=True, figsize=(DOUBLE_COLUMN, DOUBLE_COLUMN * 0.55)
+    )
 
-    X_windows_train.loc[:, sensor_str].groupby("ID").max().plot(ax=ax[0], legend=False, c="black")
-    X_windows_test.loc[:, sensor_str].groupby("ID").max().plot(ax=ax[0], legend=False, c="black")
-    ax[0].set_ylabel(sensor_str)
+    X_windows_train.loc[:, sensor_str].plot(
+        ax=ax[0], legend=False, ylabel="", c="black"
+    )
+    X_windows_test.loc[:, sensor_str].plot(
+        ax=ax[0], ylabel="", legend=False, c="black"
+    )
 
     # -1 bc. in paper is 1-indexed, in code 0-indexed
     X_latent_train.loc[:, f"dmap{dmap_idx-1}"].plot(ax=ax[1], legend=False, c="black")
     X_latent_test.loc[:, f"dmap{dmap_idx-1}"].plot(ax=ax[1], legend=False, c="black")
-    ax[0].set_ylabel(sensor_str)
+
+    ax[0].set_ylabel(sensor_str.replace("_", ""))
     ax[1].set_ylabel(fr"$\varphi_{{{dmap_idx}}}$")
 
 
 def plot_paper_dmap_selection(
     edmd,
+    selection,
     X_latent_test,
 ):
 
     dmap_eigenvalues = edmd.named_steps["laplace"].eigenvalues_
     print(f"Smallest DMAP eigenvalue = {dmap_eigenvalues[-1]}")
 
-    # locregress_selection = np.array([1, 3, 8, 9, 16, 17])
-    locregress_selection = np.array([])  # do not include information
-    own_selection = np.array([1, 2, 3, 8, 9, 11, 16, 17, 32, 33])
-
     sensor_mask = X_latent_test.columns.str.startswith("sensor_")
     X_latent_test = X_latent_test.loc[:, ~sensor_mask]
 
-    plot_data = X_latent_test.iloc[:, own_selection]
+    plot_data = X_latent_test.iloc[:, selection]
     ncols = plot_data.shape[1] // 2
     f, ax = plt.subplots(
         nrows=2, ncols=ncols, figsize=(DOUBLE_COLUMN * 0.8, ONEHALF_COLUMN * 0.8)
@@ -978,11 +983,6 @@ def plot_paper_dmap_selection(
     vmax = None
 
     for i, col in enumerate(plot_data.columns):
-
-        if own_selection[i] in locregress_selection:
-            is_make_box = True
-        else:
-            is_make_box = False
 
         values = plot_data.loc[:, [col]].to_numpy()
         values = values.reshape(plot_data.n_timeseries, plot_data.n_timesteps)
@@ -996,11 +996,9 @@ def plot_paper_dmap_selection(
         is_first_in_row = np.mod(i, ncols) == 0
         is_first_row = i // ncols == 0
 
-        bbox = dict(facecolor="none", edgecolor="black")
         dmap_idx = int(col.replace("dmap", ""))
         _ax.set_title(
             rf"$\varphi_{{{dmap_idx+1}}}$",
-            bbox=bbox if is_make_box else None,
             verticalalignment="center",
             y=1.05,
         )
