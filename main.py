@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import pickle
-
 import holidays
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +13,7 @@ from datafold.dynfold import (
     TSCTakensEmbedding,
 )
 
-from datafold.dynfold.dmd import DMDFull, PyDMDWrapper
+from datafold.dynfold.dmd import DMDFull
 from datafold.pcfold import (
     GaussianKernel,
     TSCDataFrame,
@@ -1281,7 +1279,7 @@ def plot_paper_koop_eigfunc(
             plt.ylabel("initial condition", labelpad=10)
 
         ax[1][i].set_xticks([0, 24])
-        ax[0][i].set_title(f"$\\xi_{{{selection[i]}}}$ \n ({eigval:.2f})", fontsize=8)
+        ax[0][i].set_title(f"$\\xi_{{{selection[i]+1}}}$ \n ({eigval:.2f})", fontsize=8)
 
 
 def plot_dmap_eigenfunctions_imshow(
