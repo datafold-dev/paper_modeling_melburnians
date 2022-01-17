@@ -1138,9 +1138,9 @@ def plot_paper_dmap_3d(
         scatter_point_cloud,
         cax=cax,
         orientation="horizontal",
-        ticks=[0, 8 * 60, 16 * 60, 23 * 60 - 1],
+        ticks=[0, 6 * 60, 12*60, 18 * 60, 23 * 60 - 1],
     )
-    cbar.ax.set_xticklabels(["0 am", "8 am", "4 pm", "12 pm"])
+    cbar.ax.set_xticklabels(["12 am", "6 am", "12 pm", "6 pm", "12 am"])
 
     ax = f.add_subplot(122, projection="3d")
 
