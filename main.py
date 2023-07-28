@@ -5,21 +5,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pylab
-from datafold.appfold import EDMD
 from datafold.appfold.edmd import EDMDWindowPrediction
-from datafold.dynfold import (
-    DiffusionMaps,
-    LocalRegressionSelection,
-    TSCTakensEmbedding,
-)
 
-from datafold.dynfold.dmd import DMDFull
-from datafold.pcfold import (
-    GaussianKernel,
-    TSCDataFrame,
-    TSCMetric,
-)
-
+from datafold import DMDStandard, GaussianKernel, TSCDataFrame, TSCMetric, EDMD, DiffusionMaps,LocalRegressionSelection, TSCTakensEmbedding
 from datafold.utils.plot import (
     plot_eigenvalues_time,
 )
@@ -39,7 +27,9 @@ DOUBLE_COLUMN = 14  # inches
 
 
 class EDMDPositiveSensors(EDMD):
-    def _predict_ic(self, X_dict: TSCDataFrame, time_values, qois) -> TSCDataFrame:
+    def _predict_dict_ic(
+        self, X_dict: TSCDataFrame, U, time_values, qois
+    ) -> TSCDataFrame:
         _ret = super(EDMDPositiveSensors, self)._predict_ic(X_dict, time_values, qois)
         _ret_sensors = _ret.loc[:, _ret.columns.str.startswith("sensor_")].copy()
         _ret_sensors[_ret_sensors < 0] = 0
@@ -286,13 +276,12 @@ def setup_basic_edmd():
             alpha=1,
             time_exponent=0,  # -0.5 is a scaling factor by Giannakis for the DMAP
             symmetrize_kernel=True,
-            dist_kwargs=dict(cut_off=np.inf),  # exact_numeric=False, n_jobs=-1
         ),
     )
 
     edmd = EDMDPositiveSensors(
         dict_steps=[takens, laplace],
-        dmd_model=DMDFull(is_diagonalize=True),
+        dmd_model=DMDStandard(diagonalize=True),
         include_id_state=False,
         sort_koopman_triplets=True,
         verbose=True,
@@ -1718,7 +1707,7 @@ def run_and_plot_edmd_train_test(edmd, X, n_samples_ic):
 
     plot_paper_data(train_sensor_data, test_sensor_data, n_samples_ic)
 
-    edmd.fit(train_sensor_data, {"dmd__store_system_matrix": True})
+    edmd.fit(train_sensor_data, **{"dmd__store_system_matrix": True})
 
     assert (
         edmd.n_samples_ic_ == n_samples_ic
