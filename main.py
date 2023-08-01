@@ -1630,7 +1630,7 @@ def reconstruct_prediction_horizon(
     edmd, X_true, prefix, interp_min_values=None, qois=None
 ):
     X_reconstruct, X_windows = edmd.reconstruct(
-        X=X_true, qois=qois, return_X_windows=True
+        X=X_true, qois=qois, return_windows=True
     )
 
     starting_times = X_reconstruct.initial_states().index.get_level_values("time").hour
@@ -1658,7 +1658,7 @@ def reconstruct_prediction_horizon(
             )
             ic_latent = edmd.transform(ic)
 
-            _X_pred_latent = edmd.dmd_model.predict(ic_latent, t_evals)
+            _X_pred_latent = edmd.dmd_model.predict(ic_latent, time_values=t_evals)
             _X_pred_latent = _X_pred_latent.loc[:, qois_latent]
             X_latent_interp.append(_X_pred_latent)
 
