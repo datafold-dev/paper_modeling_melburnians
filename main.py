@@ -1790,7 +1790,7 @@ if __name__ == "__main__":
     if use_cache:
         X = TSCDataFrame.from_csv("X_select_cache.csv", parse_dates=True)
     else:
-        X = read_and_select_data()
+        X = read_and_select_data("X_all.csv")
         X.to_csv("X_select_cache.csv")
 
     edmd, n_samples_ic = setup_basic_edmd()
