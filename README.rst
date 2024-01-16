@@ -11,8 +11,8 @@ The core model implementations are performed with our own Python package *datafo
 
 The primary source of the data included in this repository is provided by the city of Melbourne:
 
-* `Pedestrian Counting System - Monthly (counts per hour) <https://data.melbourne.vic.gov.au/Transport/Pedestrian-Counting-System-Monthly-counts-per-hour/b2ak-trbp>`__
-* `Pedestrian Counting System - Sensor Locations <https://data.melbourne.vic.gov.au/Transport/Pedestrian-Counting-System-Sensor-Locations/h57g-5234>`__
+* `Pedestrian Counting System - Monthly (counts per hour) <https://data.melbourne.vic.gov.au/explore/dataset/pedestrian-counting-system-monthly-counts-per-hour/information/>`__
+* `Pedestrian Counting System - Sensor Locations <https://melbournetestbed.opendatasoft.com/explore/dataset/pedestrian-counting-system-sensor-locations/information/>`__
 * `City map with recent data <http://www.pedestrian.melbourne.vic.gov.au/>`__
 
 The data is licensed under the Creative Commons Attribution 4.0 International Public
@@ -21,28 +21,14 @@ https://creativecommons.org/licenses/by/4.0/
 https://creativecommons.org/licenses/by/4.0/legalcode
 
 
-Mirror of Supplementary Material
---------------------------------
-
-A mirror of the supplementary material which also contains cached ``.csv`` file is located at
-`github <https://github.com/datafold-dev/paper_modeling_melburnians>`__.
-
-Because the data is versioned with git-lfs (Git Large File Storage), it can only be cloned
-via git:
-
-.. code-block::
-
-    git clone git@github.com:datafold-dev/paper_modeling_melburnians.git
-
-(A download of the repository in a ``.zip`` file only contains file links to the data.)
 
 Run notebook
 ------------
 
 Before running ``notebook.ipynb``, note that the computations can take a while, depending
 on your hardware. A minimum of 16 GiB memory is required. However, if intermediate results
-are cached in csv files and the flag ``use_cache`` is enabled in the notebook , most
-computational expensive operations are avoided.
+are cached in csv files and the flag ``use_cache`` is enabled in the notebook, most
+computationally expensive operations are avoided.
 
 The ``notebook.ipynb`` reproduces and visualizes results from the paper. The file
 ``main.py`` includes the code for training the EDMD model and plotting.
